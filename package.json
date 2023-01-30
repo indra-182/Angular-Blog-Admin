@@ -20,6 +20,7 @@
     "@angular/platform-browser": "~11.2.14",
     "@angular/platform-browser-dynamic": "~11.2.14",
     "@angular/router": "~11.2.14",
+    "@chayafer/angular-editor": "^1.2.8",
     "bootstrap": "^4.6.0",
     "firebase": "^7.0 || ^8.0",
     "ngx-toastr": "^13.2.1",
