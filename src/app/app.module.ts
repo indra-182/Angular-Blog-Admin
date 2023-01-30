@@ -15,7 +15,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AllPostComponent } from './posts/all-post/all-post.component';
 import { NewPostComponent } from './posts/new-post/new-post.component';
-import { AngularEditorModule } from '@chayafer/angular-editor';
 
 @NgModule({
   declarations: [
