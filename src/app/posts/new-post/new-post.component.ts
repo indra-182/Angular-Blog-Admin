@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CategoriesService } from 'src/app/services/categories.service';
 
@@ -22,7 +22,7 @@ export class NewPostComponent implements OnInit {
     this.postForm = fb.group({
       title: ['', [Validators.required, Validators.minLength(10)]],
       permalink: ['', Validators.required],
-      except: ['', [Validators.required, Validators.minLength(50)]],
+      excerpt: ['', [Validators.required, Validators.minLength(50)]],
       postImg: ['', Validators.required],
       content: ['', Validators.required],
       category: ['', Validators.required],
@@ -51,5 +51,15 @@ export class NewPostComponent implements OnInit {
     };
     reader.readAsDataURL($event.target.files[0]);
     this.selectedImg = $event.target.files[0];
+  }
+
+  isDisabled = true;
+
+  @HostListener('scroll', ['$event'])
+  onScroll(e: any) {
+    if (e.target.offsetHeight + e.target.scrollTop >= e.target.scrollHeight - 1) {
+      console.log('End');
+      this.isDisabled = false;
+    }
   }
 }
