@@ -5,7 +5,7 @@
       <p class="mb-5">You can add your new post here.</p>
     </div>
   </div>
-  <form>
+  <form [formGroup]="postForm">
     <div class="row">
       <div class="col-md-7">
         <div class="card shadow-effect">
@@ -16,7 +16,28 @@
                 type="text"
                 class="form-control"
                 (keyup)="onTitleChanged($event)"
+                formControlName="title"
+                [ngClass]="{
+                  'is-invalid':
+                    formControl.title.touched && formControl.title.invalid
+                }"
               />
+              <div *ngIf="formControl.title.errors?.required">
+                <div
+                  class="alert alert-danger"
+                  *ngIf="formControl.title.touched && formControl.title.invalid"
+                >
+                  Title is required
+                </div>
+              </div>
+              <div *ngIf="formControl.title.errors?.minlength">
+                <div
+                  class="alert alert-danger"
+                  *ngIf="formControl.title.touched && formControl.title.invalid"
+                >
+                  Title must be atleast 10 characters
+                </div>
+              </div>
             </div>
             <div class="form-group">
               <label>Permalink</label>
@@ -25,11 +46,17 @@
                 class="form-control"
                 name="permalink"
                 [(ngModel)]="permalink"
+                formControlName="permalink"
               />
             </div>
             <div class="form-group">
               <label>Except</label>
-              <textarea cols="30" rows="10" class="form-control"></textarea>
+              <textarea
+                cols="30"
+                rows="10"
+                class="form-control"
+                formControlName="except"
+              ></textarea>
             </div>
           </div>
         </div>
@@ -37,19 +64,22 @@
       <div class="col-md-5">
         <div class="form-group">
           <label>Please select a post category</label>
-          <select class="form-control">
+          <select class="form-control" formControlName="category">
             <option value="">Please select a category</option>
-            <option *ngFor="let c of categories" value="">{{ c.data.category }}</option>
+            <option *ngFor="let c of categories" value="">
+              {{ c.data.category }}
+            </option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="">Post Image</label>
+          <label>Post Image</label>
           <input
             type="file"
             class="form-control"
             accept="image/*"
             (change)="showPreview($event)"
+            formControlName="postImg"
           />
           <img [src]="imgSrc" class="form-control img-fluid img-preview" />
         </div>
@@ -61,8 +91,11 @@
         <div class="card shadow-effect">
           <div class="card-body">
             <div class="form-group">
-              <label for="">Content</label>
-              <angular-editor></angular-editor>
+              <label>Content</label>
+              <angular-editor
+                placeholder="Add your content here"
+                formControlName="content"
+              ></angular-editor>
             </div>
           </div>
         </div>
