@@ -5,7 +5,7 @@
       <p class="mb-5">You can add your new post here.</p>
     </div>
   </div>
-  <form [formGroup]="postForm">
+  <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="col-md-7">
         <div class="card shadow-effect">
@@ -47,6 +47,12 @@
                 name="permalink"
                 [(ngModel)]="permalink"
                 formControlName="permalink"
+                disabled
+                [ngClass]="{
+                  'is-invalid':
+                    formControl.permalink.touched &&
+                    formControl.permalink.invalid
+                }"
               />
               <div *ngIf="formControl.permalink.errors?.required">
                 <div
@@ -67,6 +73,10 @@
                 rows="10"
                 class="form-control"
                 formControlName="excerpt"
+                [ngClass]="{
+                  'is-invalid':
+                    formControl.excerpt.touched && formControl.excerpt.invalid
+                }"
               ></textarea>
               <div *ngIf="formControl.excerpt.errors?.required">
                 <div
@@ -78,6 +88,16 @@
                   Excerpt is required
                 </div>
               </div>
+              <div *ngIf="formControl.excerpt.errors?.minlength">
+                <div
+                  class="alert alert-danger"
+                  *ngIf="
+                    formControl.excerpt.touched && formControl.excerpt.invalid
+                  "
+                >
+                  Excerpt must be atleast 30 characters
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -87,10 +107,23 @@
           <label>Please select a post category</label>
           <select class="form-control" formControlName="category">
             <option value="">Please select a category</option>
-            <option *ngFor="let c of categories" value="">
-              {{ c.data.category }}
+            <option
+              *ngFor="let c of categories"
+              value="{{ c.id }}-{{ c.data.categoryName }}"
+            >
+              {{ c.data.categoryName }}
             </option>
           </select>
+          <div *ngIf="formControl.category.errors?.required">
+            <div
+              class="alert alert-danger"
+              *ngIf="
+                formControl.category.touched && formControl.category.invalid
+              "
+            >
+              Category is required
+            </div>
+          </div>
         </div>
 
         <div class="form-group">
@@ -101,122 +134,22 @@
             accept="image/*"
             (change)="showPreview($event)"
             formControlName="postImg"
+            [ngClass]="{
+              'is-invalid':
+                formControl.postImg.touched && formControl.postImg.invalid
+            }"
           />
           <img [src]="imgSrc" class="form-control img-fluid img-preview" />
+          <div *ngIf="formControl.postImg.errors?.required">
+            <div
+              class="alert alert-danger"
+              *ngIf="formControl.postImg.touched && formControl.postImg.invalid"
+            >
+              Image Post is required
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="content" style="overflow-y: scroll" (scroll)="onScroll($event)">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus pretium
-      sit amet nunc in tempus. Vestibulum blandit et ipsum non pulvinar.
-      Curabitur in ligula pretium, aliquam est sed, sollicitudin turpis. Sed
-      rutrum id elit vel fringilla. Mauris imperdiet est ut tortor ultrices,
-      vitae viverra nunc laoreet. Ut dapibus turpis ipsum, aliquet iaculis ipsum
-      vestibulum a. Vestibulum finibus, ipsum eget porta gravida, nibh nisl
-      varius augue, eget lobortis ex libero nec nulla. Sed eu magna auctor,
-      volutpat lacus vel, lobortis elit. Morbi urna ex, convallis in egestas id,
-      interdum quis elit. Fusce quis pharetra tellus. Sed vulputate, justo non
-      volutpat efficitur, lacus ex suscipit nulla, at sollicitudin risus nisl
-      vitae elit. Phasellus consequat, est vitae sagittis vestibulum, ante ipsum
-      ullamcorper massa, ac rutrum justo justo eget est. Praesent quis est id
-      leo fringilla efficitur vel at ante. Donec a orci augue. Duis a eros at
-      risus rhoncus mollis vitae nec turpis. Etiam commodo tristique odio, non
-      semper dolor dapibus a. Donec varius ultrices diam, ut tincidunt sapien
-      luctus et. In sit amet lacus dignissim, auctor justo ac, laoreet risus.
-      Duis rutrum felis in mi imperdiet suscipit. Integer ultrices odio lorem,
-      quis rhoncus nisi tempus eget. Ut bibendum non mi vitae viverra. Maecenas
-      vel arcu odio. Nunc at porttitor eros, et egestas enim. Nunc eget semper
-      libero, sed lobortis turpis. Aliquam hendrerit purus sit amet nisl
-      pellentesque sagittis. Aliquam aliquam, ante id sollicitudin efficitur,
-      velit lacus porta nisl, non tincidunt lorem quam sit amet felis.
-      Vestibulum consectetur sapien a purus gravida, id tempor ex fringilla. In
-      finibus sagittis felis, in rutrum diam. Curabitur purus lorem, dignissim
-      ultricies neque non, molestie pellentesque quam. Donec massa quam, blandit
-      ac facilisis ut, luctus ut turpis. Interdum et malesuada fames ac ante
-      ipsum primis in faucibus. Proin eget turpis ex. Lorem ipsum dolor sit
-      amet, consectetur adipiscing elit. Nunc eget vulputate est. In a convallis
-      est. In placerat tincidunt interdum. Cras rutrum, orci et consectetur
-      iaculis, enim quam tincidunt risus, sed pellentesque diam justo vel orci.
-      Aenean varius, enim at tincidunt consectetur, est justo lobortis nunc, et
-      tincidunt nunc ante id eros. Aenean vitae finibus diam. Sed in mauris et
-      turpis pharetra scelerisque et quis orci. Nulla convallis nisl sit amet
-      egestas varius. Etiam finibus elementum fermentum. Morbi semper efficitur
-      congue. Proin tortor dui, pulvinar sit amet est a, finibus ultrices sem.
-      Nunc eu velit consectetur, blandit metus in, vestibulum mauris. Aenean
-      tincidunt interdum tristique. Proin tempor, dui quis efficitur semper,
-      dolor nibh auctor ipsum, ac porta tellus diam in mi. In sollicitudin nulla
-      diam, eget malesuada eros iaculis vel. Mauris vel leo sit amet dui
-      sollicitudin placerat quis semper erat. Sed fringilla ligula eget augue
-      bibendum condimentum. Sed eu felis eget urna tristique cursus ac sit amet
-      felis. Maecenas eu metus ut arcu accumsan sodales. Morbi eleifend ligula
-      augue, eu venenatis eros luctus eu. Nunc id finibus lorem, ut ultricies
-      metus. Nam imperdiet quam ex, nec consectetur dui hendrerit at. Donec
-      pretium volutpat tincidunt. In risus ipsum, lacinia sed semper a,
-      imperdiet sit amet erat. Curabitur ultricies aliquam ex, a pulvinar metus
-      maximus in. Cras at ultrices lorem, eget molestie arcu. Mauris rhoncus
-      efficitur nibh, ac volutpat orci bibendum a. Proin dictum ultrices auctor.
-      Nunc commodo mi sed tempor porta. Vivamus venenatis, nunc sit amet porta
-      pharetra, libero lacus hendrerit metus, ut dapibus mi leo non sem. Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Vivamus pretium sit
-      amet nunc in tempus. Vestibulum blandit et ipsum non pulvinar. Curabitur
-      in ligula pretium, aliquam est sed, sollicitudin turpis. Sed rutrum id
-      elit vel fringilla. Mauris imperdiet est ut tortor ultrices, vitae viverra
-      nunc laoreet. Ut dapibus turpis ipsum, aliquet iaculis ipsum vestibulum a.
-      Vestibulum finibus, ipsum eget porta gravida, nibh nisl varius augue, eget
-      lobortis ex libero nec nulla. Sed eu magna auctor, volutpat lacus vel,
-      lobortis elit. Morbi urna ex, convallis in egestas id, interdum quis elit.
-      Fusce quis pharetra tellus. Sed vulputate, justo non volutpat efficitur,
-      lacus ex suscipit nulla, at sollicitudin risus nisl vitae elit. Phasellus
-      consequat, est vitae sagittis vestibulum, ante ipsum ullamcorper massa, ac
-      rutrum justo justo eget est. Praesent quis est id leo fringilla efficitur
-      vel at ante. Donec a orci augue. Duis a eros at risus rhoncus mollis vitae
-      nec turpis. Etiam commodo tristique odio, non semper dolor dapibus a.
-      Donec varius ultrices diam, ut tincidunt sapien luctus et. In sit amet
-      lacus dignissim, auctor justo ac, laoreet risus. Duis rutrum felis in mi
-      imperdiet suscipit. Integer ultrices odio lorem, quis rhoncus nisi tempus
-      eget. Ut bibendum non mi vitae viverra. Maecenas vel arcu odio. Nunc at
-      porttitor eros, et egestas enim. Nunc eget semper libero, sed lobortis
-      turpis. Aliquam hendrerit purus sit amet nisl pellentesque sagittis.
-      Aliquam aliquam, ante id sollicitudin efficitur, velit lacus porta nisl,
-      non tincidunt lorem quam sit amet felis. Vestibulum consectetur sapien a
-      purus gravida, id tempor ex fringilla. In finibus sagittis felis, in
-      rutrum diam. Curabitur purus lorem, dignissim ultricies neque non,
-      molestie pellentesque quam. Donec massa quam, blandit ac facilisis ut,
-      luctus ut turpis. Interdum et malesuada fames ac ante ipsum primis in
-      faucibus. Proin eget turpis ex. Lorem ipsum dolor sit amet, consectetur
-      adipiscing elit. Nunc eget vulputate est. In a convallis est. In placerat
-      tincidunt interdum. Cras rutrum, orci et consectetur iaculis, enim quam
-      tincidunt risus, sed pellentesque diam justo vel orci. Aenean varius, enim
-      at tincidunt consectetur, est justo lobortis nunc, et tincidunt nunc ante
-      id eros. Aenean vitae finibus diam. Sed in mauris et turpis pharetra
-      scelerisque et quis orci. Nulla convallis nisl sit amet egestas varius.
-      Etiam finibus elementum fermentum. Morbi semper efficitur congue. Proin
-      tortor dui, pulvinar sit amet est a, finibus ultrices sem. Nunc eu velit
-      consectetur, blandit metus in, vestibulum mauris. Aenean tincidunt
-      interdum tristique. Proin tempor, dui quis efficitur semper, dolor nibh
-      auctor ipsum, ac porta tellus diam in mi. In sollicitudin nulla diam, eget
-      malesuada eros iaculis vel. Mauris vel leo sit amet dui sollicitudin
-      placerat quis semper erat. Sed fringilla ligula eget augue bibendum
-      condimentum. Sed eu felis eget urna tristique cursus ac sit amet felis.
-      Maecenas eu metus ut arcu accumsan sodales. Morbi eleifend ligula augue,
-      eu venenatis eros luctus eu. Nunc id finibus lorem, ut ultricies metus.
-      Nam imperdiet quam ex, nec consectetur dui hendrerit at. Donec pretium
-      volutpat tincidunt. In risus ipsum, lacinia sed semper a, imperdiet sit
-      amet erat. Curabitur ultricies aliquam ex, a pulvinar metus maximus in.
-      Cras at ultrices lorem, eget molestie arcu. Mauris rhoncus efficitur nibh,
-      ac volutpat orci bibendum a. Proin dictum ultrices auctor. Nunc commodo mi
-      sed tempor porta. Vivamus venenatis, nunc sit amet porta pharetra, libero
-      lacus hendrerit metus, ut dapibus mi leo non sem.
-    </div>
-    <div>
-      <input type="checkbox" [disabled]="isDisabled" />Saya telah
-      membaca, memahami dan menyetujui Syarat & Ketentuan berlaku
-    </div>
-    <div>
-      <input type="checkbox" [disabled]="isDisabled" />Saya telah
-      membaca, memahami dan menyetujui isi Fund Fact Sheet & Prospektus berlaku,
-      serta telah menyampaikan data pemesanan dengan lengkap dan benar.
     </div>
 
     <div class="row mt-3 mb-5">
@@ -228,13 +161,29 @@
               <angular-editor
                 placeholder="Add your content here"
                 formControlName="content"
+                [ngClass]="{
+                  'is-invalid':
+                    formControl.content.touched && formControl.content.invalid
+                }"
               ></angular-editor>
+              <div *ngIf="formControl.content.errors?.required">
+                <div
+                  class="alert alert-danger"
+                  *ngIf="
+                    formControl.content.touched && formControl.content.invalid
+                  "
+                >
+                  Content is required
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <div class="col-md-12 text-center mb-5">
-          <button class="btn btn-info bg-theme">Save Post</button>
+          <button class="btn btn-info bg-theme" [disabled]="postForm.invalid">
+            Save Post
+          </button>
           <button class="btn btn-warning ml-3" routerLink="/posts">
             Back to Post
           </button>

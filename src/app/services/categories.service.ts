@@ -13,13 +13,11 @@ export class CategoriesService {
     this.afs
       .collection('categories')
       .add(data)
-      .then((docRef) => {
-        console.log(docRef);
+      .then(() => {
         this.toastr.success('Data Insert Successfully...!');
       })
       .catch((err) => {
-        console.log(err);
-        this.toastr.error('Data Insert Failed...!');
+        this.toastr.error(err);
       });
   }
 
@@ -42,12 +40,11 @@ export class CategoriesService {
     this.afs
       .doc(`categories/${id}`)
       .update(editData)
-      .then((docRef) => {
+      .then(() => {
         this.toastr.success('Data Updated Successfully...!');
       })
       .catch((err) => {
-        console.log(err);
-        this.toastr.error('Data Updated Failed...!');
+        this.toastr.error(err);
       });
   }
 
@@ -55,12 +52,11 @@ export class CategoriesService {
     this.afs
       .doc(`categories/${id}`)
       .delete()
-      .then((docRef) => {
+      .then(() => {
         this.toastr.success('Data Deleted Successfully...!');
       })
       .catch((err) => {
-        console.log(err);
-        this.toastr.error('Data Deleted Failed...!');
+        this.toastr.error(err);
       });
   }
 }

@@ -25,7 +25,7 @@ export class CategoriesComponent implements OnInit {
 
   onSubmit(formData: any) {
     let categoryData: Category = {
-      category: formData.value.category,
+      categoryName: formData.value.category,
     };
 
     if (this.formStatus == 'Add') {

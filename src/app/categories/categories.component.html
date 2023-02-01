@@ -57,18 +57,18 @@
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody> 
               <tr *ngFor="let category of categoryArray; let i = index">
                 <td>{{ i + 1 }}</td>
-                <td>{{ category.data.category }}</td>
+                <td>{{ category.data.categoryName }}</td>
                 <td>
                   <button
                     class="btn btn-sm btn-warning"
-                    (click)="onEdit(category.data.category, category.id)"
+                    (click)="onEdit(category.data.categoryName, category.id)"
                   >
                     Edit
                   </button>
-                  <button
+                  <button 
                     class="btn btn-sm btn-danger ml-2"
                     (click)="onDelete(category.id)"
                   >
