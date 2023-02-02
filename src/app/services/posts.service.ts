@@ -16,7 +16,7 @@ export class PostsService {
     private router: Router
   ) {}
 
-  uploadImage(selectedImg: any, postData: any) {
+  uploadImage(selectedImg: any, postData: any, formStatus: any, id: any) {
     const filePath = `postIMG/${Date.now()}`;
     console.log(filePath);
     this.storage.upload(filePath, selectedImg).then(() => {
@@ -26,7 +26,11 @@ export class PostsService {
         .getDownloadURL()
         .subscribe((url) => {
           postData.postImgPath = url;
-          this.saveData(postData);
+          if (formStatus == 'Edit') {
+            this.updateData(id, postData);
+          } else {
+            this.saveData(postData);
+          }
         });
     });
   }
@@ -56,15 +60,44 @@ export class PostsService {
       );
   }
 
+  loadOneData(id) {
+    return this.afs.doc(`posts/${id}`).valueChanges();
+  }
+
+  updateData(id: any, postData: any) {
+    this.afs
+      .doc(`posts/${id}`)
+      .update(postData)
+      .then(() => {
+        this.toastr.success('Data Insert Successfully');
+        this.router.navigate(['/posts']);
+      });
+  }
+
+  deleteImage(imgPath: any, id: any) {
+    this.storage.storage
+      .refFromURL(imgPath)
+      .delete()
+      .then(() => {
+        this.deleteData(id);
+      });
+  }
+
   deleteData(id: any) {
     this.afs
       .doc(`posts/${id}`)
       .delete()
       .then(() => {
-        this.toastr.success('Data Deleted Successfully...!');
+        this.toastr.success('Data Deleted...!');
       })
-      .catch((err) => {
-        this.toastr.error(err);
+      .catch(() => {
+        this.toastr.error('Data Failed to Delete');
       });
+  }
+
+  markFeatured(id : any, featuredData) {
+    this.afs.doc(`posts/${id}`).update(featuredData).then(() => {
+      this.toastr.info('Featured Status Updated');
+    })
   }
 }

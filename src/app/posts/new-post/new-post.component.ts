@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Post } from 'src/app/models/post';
 import { CategoriesService } from 'src/app/services/categories.service';
 import { PostsService } from 'src/app/services/posts.service';
@@ -15,19 +16,52 @@ export class NewPostComponent implements OnInit {
   selectedImg: any;
   categories: Array<object>;
   postForm: FormGroup;
+  post: any;
+  formStatus: string = 'Add New';
+  docId: string;
 
   constructor(
     private categoriesService: CategoriesService,
     private fb: FormBuilder,
-    private postService: PostsService
+    private postService: PostsService,
+    private route: ActivatedRoute
   ) {
-    this.postForm = fb.group({
-      title: ['', [Validators.required, Validators.minLength(10)]],
-      permalink: ['', Validators.required],
-      excerpt: ['', [Validators.required, Validators.minLength(30)]],
-      postImg: ['', Validators.required],
-      content: ['', Validators.required],
-      category: ['', Validators.required],
+    this.route.queryParams.subscribe((val) => {
+      this.docId = val.id;
+      if (this.docId) {
+        this.postService.loadOneData(val.id).subscribe((p) => {
+          this.post = p;
+
+          this.postForm = this.fb.group({
+            title: [
+              this.post.title,
+              [Validators.required, Validators.minLength(10)],
+            ],
+            permalink: [this.post.permalink, Validators.required],
+            excerpt: [
+              this.post.excerpt,
+              [Validators.required, Validators.minLength(30)],
+            ],
+            category: [
+              `${this.post.category.categoryId}-${this.post.category.categoryName}`,
+              Validators.required,
+            ],
+            postImg: ['', Validators.required],
+            content: [this.post.content, Validators.required],
+          });
+          this.imgSrc = this.post.postImgPath;
+          this.formStatus = 'Edit';
+        });
+      } else {
+        this.postForm = this.fb.group({
+          title: ['', [Validators.required, Validators.minLength(10)]],
+          permalink: ['', Validators.required],
+          excerpt: ['', [Validators.required, Validators.minLength(30)]],
+          category: ['', Validators.required],
+          postImg: ['', Validators.required],
+          content: ['', Validators.required],
+        });
+      }
     });
   }
 
@@ -73,7 +107,12 @@ export class NewPostComponent implements OnInit {
       status: 'new',
       createdAt: new Date(),
     };
-    this.postService.uploadImage(this.selectedImg, postData);
+    this.postService.uploadImage(
+      this.selectedImg,
+      postData,
+      this.formStatus,
+      this.docId
+    );
     this.postForm.reset();
     this.imgSrc = '../../../assets/images/default-image.jpg';
   }

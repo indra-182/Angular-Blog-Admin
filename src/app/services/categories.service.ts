@@ -16,8 +16,8 @@ export class CategoriesService {
       .then(() => {
         this.toastr.success('Data Insert Successfully...!');
       })
-      .catch((err) => {
-        this.toastr.error(err);
+      .catch(() => {
+        this.toastr.error('Data Failed to Insert');
       });
   }
 
@@ -43,8 +43,8 @@ export class CategoriesService {
       .then(() => {
         this.toastr.success('Data Updated Successfully...!');
       })
-      .catch((err) => {
-        this.toastr.error(err);
+      .catch(() => {
+        this.toastr.error('Data Failed to Update');
       });
   }
 
@@ -55,8 +55,8 @@ export class CategoriesService {
       .then(() => {
         this.toastr.success('Data Deleted Successfully...!');
       })
-      .catch((err) => {
-        this.toastr.error(err);
+      .catch(() => {
+        this.toastr.error('Data Failed to Delete');
       });
   }
 }
