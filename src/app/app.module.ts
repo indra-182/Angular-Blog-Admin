@@ -4,10 +4,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AngularEditorModule } from '@kolkov/angular-editor';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { environment } from 'src/environments/environment.prod';
@@ -38,10 +39,11 @@ import { LoginComponent } from './auth/login/login.component';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     AngularFireStorageModule,
+    AngularFireAuthModule,
+    AngularEditorModule,
     FormsModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
-    AngularEditorModule,
     HttpClientModule,
     ReactiveFormsModule,
   ],
