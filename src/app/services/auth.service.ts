@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
   isLogin: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  isLoginGuard: boolean = false;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -23,6 +24,7 @@ export class AuthService {
         this.toastr.success('Login Success');
         this.loadUser();
         this.isLogin.next(true);
+        this.isLoginGuard = true;
         this.router.navigate(['/']);
       })
       .catch((e) => {
@@ -38,8 +40,9 @@ export class AuthService {
 
   logout() {
     this.afAuth.signOut().then(() => {
-      localStorage.removeItem('user');
       this.toastr.success('Logout Success');
+      localStorage.removeItem('user');
+      this.isLoginGuard = false;
       this.router.navigate(['/login']);
       this.isLogin.next(false);
     });
