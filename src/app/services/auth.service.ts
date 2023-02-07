@@ -23,9 +23,9 @@ export class AuthService {
       .then(() => {
         this.toastr.success('Login Success');
         this.loadUser();
+        this.router.navigate(['/']);
         this.isLogin.next(true);
         this.isLoginGuard = true;
-        this.router.navigate(['/']);
       })
       .catch((e) => {
         this.toastr.warning('Login Failed');
