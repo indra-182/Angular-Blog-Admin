@@ -35,7 +35,7 @@ export class NewPostComponent implements OnInit {
           this.postForm = this.fb.group({
             title: [
               this.post.title,
-              [Validators.required, Validators.minLength(10)],
+              [Validators.required, Validators.minLength(9)],
             ],
             permalink: [this.post.permalink, Validators.required],
             excerpt: [
@@ -54,7 +54,7 @@ export class NewPostComponent implements OnInit {
         });
       } else {
         this.postForm = this.fb.group({
-          title: ['', [Validators.required, Validators.minLength(10)]],
+          title: ['', [Validators.required, Validators.minLength(9)]],
           permalink: ['', Validators.required],
           excerpt: ['', [Validators.required, Validators.minLength(30)]],
           category: ['', Validators.required],

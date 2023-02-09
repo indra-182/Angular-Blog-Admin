@@ -21,6 +21,7 @@ import { AllPostComponent } from './posts/all-post/all-post.component';
 import { NewPostComponent } from './posts/new-post/new-post.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './auth/login/login.component';
+import { SubscribersComponent } from './subscribers/subscribers.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { LoginComponent } from './auth/login/login.component';
     AllPostComponent,
     NewPostComponent,
     LoginComponent,
+    SubscribersComponent,
   ],
   imports: [
     BrowserModule,
