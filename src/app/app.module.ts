@@ -10,6 +10,8 @@ import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
 
 import { environment } from 'src/environments/environment.prod';
 import { AppComponent } from './app.component';
@@ -48,6 +50,8 @@ import { SubscribersComponent } from './subscribers/subscribers.component';
     BrowserAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    MatMenuModule,
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -27,12 +27,32 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="text-center" *ngFor="let s of subscribers; let i = index">
-                <td>{{i + 1}}</td>
-                <td>{{s.data.name}}</td>
-                <td>{{s.data.email}}</td>
+              <tr
+                class="text-center"
+                *ngFor="let s of subscribers; let i = index"
+              >
+                <td>{{ i + 1 }}</td>
+                <td>{{ s.data.name }}</td>
+                <td>{{ s.data.email }}</td>
                 <td>
-                  <button class="btn btn-sm btn-danger ml-2" (click)="onDelete(s.id)">Delete</button>
+                  <button class="btn btn-warning ml-2" style="margin-bottom: 10px; background-color: #FFA400; color: white;" (click)="onDelete(s.id)">
+                    Delete
+                  </button>
+                  <span class="pt-2">
+
+                  <button mat-flat-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" class="ml-2 more-icon">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="onJual()">
+
+                      <span>Jual</span>
+                    </button>
+                    <button mat-menu-item (click)="onAlihkan()">
+                      <span>Alihkan</span>
+                    </button>
+                  </mat-menu>
+                  </span>
                 </td>
               </tr>
             </tbody>
